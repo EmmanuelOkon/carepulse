@@ -25,7 +25,10 @@ export default function Home() {
             <p className="justify-items-end text-dark-600 xl:text-left">
               © {currentYear} CarePluse
             </p>
-            <Link href="/?admin=true" className="text-green-500 hover:bg-green-900 hover:text-white p-2 rounded-md ">
+            <Link
+              href="/?admin=true"
+              className="text-green-500 hover:bg-green-500 hover:text-white p-2 rounded-md "
+            >
               Admin
             </Link>
           </div>
@@ -37,8 +40,12 @@ export default function Home() {
         height={1000}
         width={1000}
         alt="patient"
-        className="side-img max-w-[50%]"
+        className="side-img max-w[50%]"
       />
+
+      {/* <div className="bg-red-700 max-w-[50%] object-cover h-full ">
+        
+      </div> */}
     </div>
   );
 }

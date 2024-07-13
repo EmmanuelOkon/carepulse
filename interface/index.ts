@@ -24,3 +24,9 @@ export interface CustomFormProps {
   renderSkeleton?: (field: any) => React.ReactNode;
   fieldType: FormFieldType;
 }
+
+export interface ButtonProps {
+  isLoading: boolean;
+  className?: string;
+  children: React.ReactNode;
+}
