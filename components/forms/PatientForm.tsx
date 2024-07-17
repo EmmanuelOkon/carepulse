@@ -1,25 +1,24 @@
 "use client";
 
-import * as React from "react";
-import { z } from "zod";
-
+// import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
+import { createUser } from "@/lib/actions/patient.actions";
+import { UserFormValidation } from "@/lib/validation";
 
 import CustomFormField from "../CustomFormField";
 import { FormFieldType } from "@/interface";
-import { UserFormValidation } from "@/lib/validation";
 import SubmitButton from "../SubmitButton";
 import "react-phone-number-input/style.css";
-import { createUser } from "@/lib/actions/patient.actions";
 
 const PatientForm = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
@@ -30,30 +29,30 @@ const PatientForm = () => {
     },
   });
 
-  async function onSubmit({
-    name,
-    email,
-    phone,
-  }: z.infer<typeof UserFormValidation>) {
+  const onSubmit = async (values: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
 
     try {
-      const userData = { name, email, phone };
+      const user = {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+      };
 
-      const user = await createUser(userData);
+      // const newUser = await createUser(user);
+      const newUser = (await createUser(user)) as { $id: string };
 
-      if (user) {
-        router.push(`/patients/${user.$id}/register`);
+      if (newUser) {
+        router.push(`/patients/${newUser.$id}/register`);
       }
     } catch (error) {
       console.log(error);
     }
-  }
 
-  // function onSubmit(values: z.infer<typeof UserFormValidation>) {
-  //   console.log(values);
-  // }
+    setIsLoading(false);
+  };
 
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
@@ -102,3 +101,4 @@ const PatientForm = () => {
 };
 
 export default PatientForm;
+

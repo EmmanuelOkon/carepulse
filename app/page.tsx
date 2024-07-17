@@ -40,7 +40,7 @@ export default function Home() {
         height={1000}
         width={1000}
         alt="patient"
-        className="side-img max-w[50%]"
+        className="side-img max-w-[50%]"
       />
 
       {/* <div className="bg-red-700 max-w-[50%] object-cover h-full ">
