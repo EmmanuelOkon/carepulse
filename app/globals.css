@@ -67,7 +67,7 @@
   }
 
   .side-img {
-    @apply hidden h-full object-cover sm:block;
+    @apply hidden h-full object-cover md:block;
   }
 
   .copyright {
@@ -209,7 +209,7 @@
   }
 
   .shad-textArea {
-    @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+    @apply bg-dark-400 resize-none placeholder:text-dark-600 border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
   }
 
   .shad-combobox-item {

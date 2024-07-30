@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <div className="flex h-screen max-h-screen ">
       {/* OTP VERIFICATION | PASSKEY MODAL */}
-      <section className="remove-scrollbar container my-auto">
-        <div className="sub-container max-w-[496px] ">
+      <section className="remove-scrollbar container">
+        <div className="sub-container max-w-[496px] flex-1 flex-col py10 ">
           <Image
             src="/assets/icons/logo-full.svg"
             height={1000}
@@ -21,7 +21,7 @@ export default function Home() {
 
           <PatientForm />
 
-          <div className="text-14-regular mt-20 flex items-center justify-between">
+          <div className="text-14-regular mt-20 py-10 flex items-center justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">
               © {currentYear} CarePluse
             </p>
