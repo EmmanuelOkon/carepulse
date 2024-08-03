@@ -35,10 +35,3 @@ export interface FileUploaderProps {
   files: File[] | undefined;
   onChange: (files: File[]) => void;
 };
-
-
-// type FileUploaderProps = {
-//   files: File[] | undefined;
-//   onChange: (files: File[]) => void;
-// };
-

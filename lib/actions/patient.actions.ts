@@ -74,7 +74,7 @@ export const registerPatient = async ({
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
     }
 
-    console.log(patient);
+    // console.log(patient);
 
     // We now need to create a patient document using the uploaded file.
     const newPatient = await databases.createDocument(
@@ -92,10 +92,48 @@ export const registerPatient = async ({
       }
     );
 
-    console.log(newPatient);
-
     return parseStringify(newPatient);
   } catch (error: any) {
     console.error("An error occurred while creating a new patient:", error);
+  }
+};
+
+// GET PATIENT
+export const getPatient = async (userId: string) => {
+  try {
+    const patient = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [
+        // We pass a query to filter the patient we wish to retrieve
+        Query.equal("userId", userId),
+      ]
+    );
+
+    return parseStringify(patient);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving the patient details:",
+      error
+    );
+  }
+};
+
+// GET ALL PATIENTS
+export const getAllPatients = async () => {
+  try {
+    const patients = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!
+    );
+
+    //  console.log(patients);
+
+    return parseStringify(patients);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving all patient details:",
+      error
+    );
   }
 };
