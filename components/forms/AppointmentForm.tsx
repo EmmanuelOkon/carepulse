@@ -16,10 +16,10 @@ import { FormFieldType } from "@/interface";
 import SubmitButton from "../SubmitButton";
 import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
-import {
-  UserFormValidation,
-  AppointmentFormValidation,
-} from "@/lib/validation";
+import { getAppointmentSchema } from "@/lib/validation";
+import { createAppointment } from "@/lib/actions/appointment.actions";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-phone-number-input/style.css";
 
 const AppointmentForm = ({
   userId,
@@ -33,20 +33,23 @@ const AppointmentForm = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const AppointmentFormValidation = getAppointmentSchema(type);
+
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      // ...PatientFormDefaultValues,
-      name: "",
-      email: "",
-      phone: "",
-      // name: user.name,
-      // email: user.email,
-      // phone: user.phone,
+      primaryPhysician: "",
+      schedule: new Date(),
+      reason: "",
+      note: "",
+      cancellationReason: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof UserFormValidation>) => {
+  const onSubmit = async (
+    values: z.infer<typeof AppointmentFormValidation>
+  ) => {
+    console.log(values);
     setIsLoading(true);
 
     let status;
@@ -61,44 +64,38 @@ const AppointmentForm = ({
         status = "pending";
     }
 
+    console.log("before the try:", type);
+
     try {
+      console.log("before success, status:", type);
+      console.log("before success, status:", patientId);
       if (type === "create" && patientId) {
-        // const appointment = {
-        //   userId,
-        //   patient: patientId,
-        //   primaryPhysician: values.primaryPhysician,
-        //   schedule: new Date(values.schedule),
-        //   reason: values.reason!,
-        //   status: status as Status,
-        //   note: values.note,
-        // };
+        console.log("I'm here");
+        console.log(patientId);
 
-        // const newAppointment = await createAppointment(appointment);
+        const appointmentData = {
+          userId,
+          patient: patientId,
+          primaryPhysician: values.primaryPhysician,
+          schedule: new Date(values.schedule),
+          reason: values.reason!,
+          status: status as Status,
+          note: values.note,
+        };
 
-        // if (newAppointment) {
-        //   form.reset();
-        //   router.push(
-        //     `/patients/${userId}/new-appointment/success?appointmentId=${newAppointment.$id}`
-        //   );
-        // }
-      } else {
-        // const appointmentToUpdate = {
-        //   userId,
-        //   appointmentId: appointment?.$id!,
-        //   appointment: {
-        //     primaryPhysician: values.primaryPhysician,
-        //     schedule: new Date(values.schedule),
-        //     status: status as Status,
-        //     cancellationReason: values.cancellationReason,
-        //   },
-        //   type,
-        // };
-        // const updatedAppointment = await updateAppointment(appointmentToUpdate);
-        // if (updatedAppointment) {
-        //   setOpen && setOpen(false);
-        //   form.reset();
-        // }
+        const appointment = await createAppointment(appointmentData);
+
+        console.log(appointment);
+        console.log("After success, status:", type);
+
+        if (appointment) {
+          form.reset();
+          router.push(
+            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
+          );
+        }
       }
+      console.log("After success, status:", type);
     } catch (error) {
       console.log(error);
     }

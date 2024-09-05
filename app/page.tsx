@@ -7,10 +7,11 @@ const currentYear = new Date().getFullYear();
 
 export default function Home() {
   return (
-    <div className="flex h-screen max-h-screen ">
+    <div className="flex justifybetween items-center h-screen max-h-screen">
       {/* OTP VERIFICATION | PASSKEY MODAL */}
-      <section className="remove-scrollbar container">
-        <div className="sub-container max-w-[496px] flex-1 flex-col py10 ">
+
+      <section className="remove-scrollbar overflow-y-auto w-full container flex flex-col max-h-screen">
+        <div className="sub-container max-w-[496px] flex-1 justify-between py-10">
           <Image
             src="/assets/icons/logo-full.svg"
             height={1000}
@@ -21,9 +22,9 @@ export default function Home() {
 
           <PatientForm />
 
-          <div className="text-14-regular mt-20 py-10 flex items-center justify-between">
+          <div className="text-14-regular mt-14 flex items-center justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">
-              © {currentYear} CarePluse
+              © {currentYear} CarePulse
             </p>
             <Link
               href="/?admin=true"

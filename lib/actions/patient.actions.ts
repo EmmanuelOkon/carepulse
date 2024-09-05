@@ -25,6 +25,7 @@ export const createUser = async (user: CreateUserParams) => {
       undefined,
       user.name
     );
+    // console.log(newUser);
 
     return parseStringify(newUser);
   } catch (error: any) {
@@ -101,16 +102,15 @@ export const registerPatient = async ({
 // GET PATIENT
 export const getPatient = async (userId: string) => {
   try {
-    const patient = await databases.listDocuments(
+    const patients = await databases.listDocuments(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!,
-      [
-        // We pass a query to filter the patient we wish to retrieve
-        Query.equal("userId", userId),
-      ]
+      [Query.equal("userId", [userId])]
     );
 
-    return parseStringify(patient);
+    // console.log(patients.documents[0]);
+
+    return parseStringify(patients.documents[0]);
   } catch (error) {
     console.error(
       "An error occurred while retrieving the patient details:",
@@ -119,21 +119,51 @@ export const getPatient = async (userId: string) => {
   }
 };
 
-// GET ALL PATIENTS
-export const getAllPatients = async () => {
+export const getAllUsers = async () => {
   try {
-    const patients = await databases.listDocuments(
+    const users = await databases.listDocuments(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!
     );
 
-    //  console.log(patients);
+    // console.log(users); // Log the entire users object
+    // console.log(`Number of users: ${users.documents.length}`); // Log the length of the array
 
-    return parseStringify(patients);
-  } catch (error) {
-    console.error(
-      "An error occurred while retrieving all patient details:",
-      error
+    const parsedUsers = users.documents.map((document) =>
+      parseStringify(document)
     );
+    // console.log(parsedUsers); // Log the parsed users
+
+    return parsedUsers;
+
+    // console.log(document);
+    // return users.documents.map((document) => parseStringify(document));
+  } catch (error) {
+    console.error("An error occurred while retrieving the users list:", error);
   }
 };
+
+// GET ALL PATIENTS
+// export const getAllPatients = async () => {
+//   try {
+//     const patients = await databases.listDocuments(
+//       DATABASE_ID!,
+//       PATIENT_COLLECTION_ID!
+//     );
+
+//     const allPatients = patients.documents.map((patient) => {
+//       return {
+//         id: patient.$id,
+//         ...patient,
+//       };
+//     });
+//     console.log(allPatients);
+
+//     return parseStringify(allPatients);
+//   } catch (error) {
+//     console.error(
+//       "An error occurred while retrieving all patient details:",
+//       error
+//     );
+//   }
+// };

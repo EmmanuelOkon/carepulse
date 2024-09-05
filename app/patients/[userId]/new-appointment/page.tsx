@@ -1,22 +1,20 @@
 import AppointmentForm from "@/components/forms/AppointmentForm";
-import { getAllPatients, getPatient } from "@/lib/actions/patient.actions";
+import { getPatient } from "@/lib/actions/patient.actions";
 import Image from "next/image";
 import React from "react";
 
 type Props = {};
 
 const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
+
   const patient = await getPatient(userId);
-  const allPatients = await getAllPatients();
 
   const currentYear = new Date().getFullYear();
 
-  //   console.log(patient);
-  //   console.log(allPatients);
 
   return (
-    <div className="flex h-screen max-h-screen">
-      <section className="remove-scrollbar container">
+    <div className="flex h-screen items-center max-h-screen">
+      <section className="remove-scrollbar overflow-y-auto w-full container flex flex-col max-h-screen">
         <div className="sub-container max-w-[860px] flex-1 justify-between">
           <Image
             src="/assets/icons/logo-full.svg"
@@ -27,12 +25,12 @@ const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
           />
 
           <AppointmentForm
+            type="create"
             patientId={patient?.$id}
             userId={userId}
-            type="create"
           />
 
-          <p className="copyright mt-10 py-12">© {currentYear} CarePluse</p>
+          <p className="copyright mt-10 py-12">© {currentYear} CarePulse</p>
         </div>
       </section>
 

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Plus Jakarta Sans Variable', sans-serif;
+}
+
 /* ========================================== TAILWIND STYLES */
 @layer base {
 
@@ -76,7 +80,7 @@
 
   /* ==== SUCCESS */
   .success-img {
-    @apply m-auto flex flex-1 flex-col items-center justify-between gap-10 py-10;
+    @apply m-auto flex flex-1 flex-col items-center justify-center gap-10 py-10;
   }
 
   .request-details {
