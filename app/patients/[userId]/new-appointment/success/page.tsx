@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Doctors } from "@/constants";
 import { getAppointment } from "@/lib/actions/appointment.actions";
 import { formatDateTime } from "@/lib/utils";
+import { getUser } from "@/lib/actions/patient.actions";
 
 const RequestSuccess = async ({
   searchParams,
@@ -12,9 +13,11 @@ const RequestSuccess = async ({
 }: SearchParamProps) => {
   const appointmentId = (searchParams?.appointmentId as string) || "";
   const appointment = await getAppointment(appointmentId);
-  
+
   const year = new Date().getFullYear();
 
+  const user = await getUser(userId);
+  const userName = user?.name || "User";
   const doctor = Doctors.find(
     (doctor) => doctor.name === appointment.primaryPhysician
   );
@@ -40,9 +43,11 @@ const RequestSuccess = async ({
             alt="success"
             className="w-[150px]"
           />
-          <h2 className="header mb-6 max-w-[600px] text-center">
-            Your <span className="text-green-500">appointment request</span> has
-            been successfully submitted!
+          {/* <p>Hello {userName}, </p> */}
+          <h2 className="sub-header mb-6 max-w-[600px] text-center">
+            Hello<span className="text-green-500">&nbsp;{userName}</span>, your{" "}
+            <span className="text-green-500">appointment request</span> has been
+            successfully submitted!
           </h2>
           <p>We&apos;ll be in touch shortly to confirm.</p>
         </section>

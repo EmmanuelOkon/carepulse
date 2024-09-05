@@ -5,6 +5,7 @@ import { ID } from "node-appwrite";
 
 import {
   APPOINTMENT_COLLECTION_ID,
+  PATIENT_COLLECTION_ID,
   DATABASE_ID,
   databases,
 } from "../appwrite.config";
@@ -47,5 +48,4 @@ export const getAppointment = async (appointmentId: string) => {
     );
   }
 }
-
 
