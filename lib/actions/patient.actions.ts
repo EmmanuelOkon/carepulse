@@ -1,7 +1,17 @@
-"use server"
+"use server";
 
-import { users } from "../appwrite.config";
+import {
+  BUCKET_ID,
+  DATABASE_ID,
+  databases,
+  ENDPOINT,
+  PATIENT_COLLECTION_ID,
+  PROJECT_ID,
+  storage,
+  users,
+} from "../appwrite.config";
 import { ID, Query } from "node-appwrite";
+import { InputFile } from "node-appwrite/file";
 import { parseStringify } from "../utils";
 
 // CREATE APPWRITE USER
@@ -12,9 +22,10 @@ export const createUser = async (user: CreateUserParams) => {
       ID.unique(),
       user.email,
       user.phone,
-    //   undefined,
+      undefined,
       user.name
     );
+    // console.log(newUser);
 
     return parseStringify(newUser);
   } catch (error: any) {
@@ -29,3 +40,130 @@ export const createUser = async (user: CreateUserParams) => {
     console.error("An error occurred while creating a new user:", error);
   }
 };
+
+// GET USER
+export const getUser = async (userId: string) => {
+  try {
+    const user = await users.get(userId);
+
+    return parseStringify(user);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving the user details:",
+      error
+    );
+  }
+};
+
+// REGISTER PATIENT
+export const registerPatient = async ({
+  identificationDocument,
+  ...patient
+}: RegisterUserParams) => {
+  try {
+    // We need to upload the file to be able to access it later on using the URL and then store it. So we need to store the file before on Appwrite storage, not database
+    let file;
+    if (identificationDocument) {
+      const inputFile =
+        // identificationDocument &&
+        InputFile.fromBuffer(
+          identificationDocument?.get("blobFile") as Blob,
+          identificationDocument?.get("fileName") as string
+        );
+
+      // So we store the file using a bucket ID, add a unique ID to the file and pass the input file itself.
+      file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
+    }
+
+    // console.log(patient);
+
+    // We now need to create a patient document using the uploaded file.
+    const newPatient = await databases.createDocument(
+      // We pass the Database ID, the patient collection ID and a unique ID for the patient we wish to create
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      ID.unique(),
+      {
+        // We pass the patient object, and if the file exists, we pass the file ID
+        identificationDocumentId: file?.$id ? file.$id : null,
+        identificationDocumentUrl: file?.$id
+          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view?project=${PROJECT_ID}`
+          : null,
+        ...patient,
+      }
+    );
+
+    return parseStringify(newPatient);
+  } catch (error: any) {
+    console.error("An error occurred while creating a new patient:", error);
+  }
+};
+
+// GET PATIENT
+export const getPatient = async (userId: string) => {
+  try {
+    const patients = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.equal("userId", [userId])]
+    );
+
+    // console.log(patients.documents[0]);
+
+    return parseStringify(patients.documents[0]);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving the patient details:",
+      error
+    );
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const users = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!
+    );
+
+    // console.log(users); // Log the entire users object
+    // console.log(`Number of users: ${users.documents.length}`); // Log the length of the array
+
+    const parsedUsers = users.documents.map((document) =>
+      parseStringify(document)
+    );
+    // console.log(parsedUsers); // Log the parsed users
+
+    return parsedUsers;
+
+    // console.log(document);
+    // return users.documents.map((document) => parseStringify(document));
+  } catch (error) {
+    console.error("An error occurred while retrieving the users list:", error);
+  }
+};
+
+// GET ALL PATIENTS
+// export const getAllPatients = async () => {
+//   try {
+//     const patients = await databases.listDocuments(
+//       DATABASE_ID!,
+//       PATIENT_COLLECTION_ID!
+//     );
+
+//     const allPatients = patients.documents.map((patient) => {
+//       return {
+//         id: patient.$id,
+//         ...patient,
+//       };
+//     });
+//     console.log(allPatients);
+
+//     return parseStringify(allPatients);
+//   } catch (error) {
+//     console.error(
+//       "An error occurred while retrieving all patient details:",
+//       error
+//     );
+//   }
+// };

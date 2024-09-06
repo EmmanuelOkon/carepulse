@@ -55,9 +55,9 @@ const PatientForm = () => {
   
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 justify-center">
         <section className="mb-12 space-y-4">
-          <h1 className="header">
+          <h1 className="header text-white ">
             Hi there
             <span className="animate-pulse ">👋</span>
           </h1>
@@ -90,6 +90,7 @@ const PatientForm = () => {
           name="phone"
           label="Phone number"
           placeholder="(555) 123-4567"
+          
           //
           // iconSrc="/assets/icons/phone.svg"
         />

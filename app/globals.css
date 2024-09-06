@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Plus Jakarta Sans Variable', sans-serif;
+}
+
 /* ========================================== TAILWIND STYLES */
 @layer base {
 
@@ -67,7 +71,7 @@
   }
 
   .side-img {
-    @apply hidden h-full object-cover sm:block;
+    @apply hidden h-full object-cover md:block;
   }
 
   .copyright {
@@ -76,7 +80,7 @@
 
   /* ==== SUCCESS */
   .success-img {
-    @apply m-auto flex flex-1 flex-col items-center justify-between gap-10 py-10;
+    @apply m-auto flex flex-1 flex-col items-center justify-center gap-10 py-10;
   }
 
   .request-details {
@@ -209,7 +213,7 @@
   }
 
   .shad-textArea {
-    @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+    @apply bg-dark-400 resize-none placeholder:text-dark-600 border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
   }
 
   .shad-combobox-item {

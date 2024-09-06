@@ -12,6 +12,7 @@ import { Input } from "./ui/input";
 
 import { CustomFormProps, FormFieldType } from "@/interface";
 import Image from "next/image";
+import ReactDatePicker from "react-datepicker";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
@@ -63,7 +64,7 @@ const RenderInput = ({
       return (
         <FormControl>
           <PhoneInput
-            // defaultCountry="US"
+            defaultCountry="NG"
             placeholder={props.placeholder}
             international
             withCountryCallingCode
@@ -99,14 +100,15 @@ const RenderInput = ({
             className="ml-2"
           />
           <FormControl>
-            {/* <ReactDatePicker
+            <ReactDatePicker
               showTimeSelect={props.showTimeSelect ?? false}
               selected={field.value}
-              onChange={(date: Date) => field.onChange(date)}
+              onChange={(date: Date | null) => field.onChange(date as Date)}
               timeInputLabel="Time:"
-              dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+              placeholderText="dd-mm-yyyy"
+              dateFormat={props.dateFormat ?? "dd-MM-yyyy"}
               wrapperClassName="date-picker"
-            /> */}
+            />
           </FormControl>
         </div>
       );

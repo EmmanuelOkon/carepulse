@@ -2,8 +2,7 @@ import Image from "next/image";
 
 import { Button } from "./ui/button";
 import { ButtonProps } from "@/interface";
-
-
+import { Icons } from "@/public/assets/icons";
 
 const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
   return (
@@ -13,15 +12,8 @@ const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
       className={className ?? "shad-primary-btn w-full"}
     >
       {isLoading ? (
-        <div className="flex items-center gap-4">
-          <Image
-            src="/assets/icons/loader.svg"
-            alt="loader"
-            width={24}
-            height={24}
-            className="animate-spin"
-          />
-          Loading...
+        <div className="flex items-center justify-center gap4">
+          <Icons.Loader className="animate-spin text-white" />
         </div>
       ) : (
         children
