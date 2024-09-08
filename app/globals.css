@@ -261,7 +261,7 @@ body {
   }
 
   .shad-otp-slot {
-    @apply text-36-bold justify-center flex border border-dark-500 rounded-lg size-16 gap-4 !important;
+    @apply p-2 text-18-bold md:text-36-bold justify-center flex border border-dark-500 rounded-md md:rounded-lg size-8 sm:size-12 md:size-16 gap-2 md:gap-4 ring-green-500 !important;
   }
 
   .shad-alert-dialog {
