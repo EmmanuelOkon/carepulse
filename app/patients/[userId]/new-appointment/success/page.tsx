@@ -43,7 +43,6 @@ const RequestSuccess = async ({
             alt="success"
             className="w-[150px]"
           />
-          {/* <p>Hello {userName}, </p> */}
           <h2 className="sub-header mb-6 max-w-[600px] text-center">
             Hello<span className="text-green-500">&nbsp;{userName}</span>, your{" "}
             <span className="text-green-500">appointment request</span> has been
