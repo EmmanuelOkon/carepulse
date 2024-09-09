@@ -42,7 +42,7 @@ const AppointmentForm = ({
   const [isLoading, setIsLoading] = React.useState(false);
 
   const AppointmentFormValidation = getAppointmentSchema(type);
-  console.log(appointment);
+
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
