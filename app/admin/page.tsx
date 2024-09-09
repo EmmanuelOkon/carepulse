@@ -6,8 +6,6 @@ import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 const AdminPage = async () => {
   const appointments = await getRecentAppointmentList();
 
@@ -26,18 +24,6 @@ const AdminPage = async () => {
 
         <p className="text-16-semibold">Admin Dashboard</p>
       </header>
-      <Tabs defaultValue="account" className="w-[400px]">
-        <TabsList>
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account">
-          Make changes to your account here.
-        </TabsContent>
-        <TabsContent value="password">
-          Change your password here. and go home
-        </TabsContent>
-      </Tabs>
 
       <main className="admin-main">
         <section className="w-full space-y-4">
