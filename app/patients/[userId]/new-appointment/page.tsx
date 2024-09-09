@@ -6,11 +6,9 @@ import React from "react";
 type Props = {};
 
 const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
-
   const patient = await getPatient(userId);
 
   const currentYear = new Date().getFullYear();
-
 
   return (
     <div className="flex h-screen items-center max-h-screen">

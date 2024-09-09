@@ -13,6 +13,7 @@ import {
 import { ID, Query } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { parseStringify } from "../utils";
+import { Patient } from "@/types/appwrite.types";
 
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
@@ -119,51 +120,46 @@ export const getPatient = async (userId: string) => {
   }
 };
 
-export const getAllUsers = async () => {
-  try {
-    const users = await databases.listDocuments(
-      DATABASE_ID!,
-      PATIENT_COLLECTION_ID!
-    );
-
-    // console.log(users); // Log the entire users object
-    // console.log(`Number of users: ${users.documents.length}`); // Log the length of the array
-
-    const parsedUsers = users.documents.map((document) =>
-      parseStringify(document)
-    );
-    // console.log(parsedUsers); // Log the parsed users
-
-    return parsedUsers;
-
-    // console.log(document);
-    // return users.documents.map((document) => parseStringify(document));
-  } catch (error) {
-    console.error("An error occurred while retrieving the users list:", error);
-  }
-};
 
 // GET ALL PATIENTS
-// export const getAllPatients = async () => {
-//   try {
-//     const patients = await databases.listDocuments(
-//       DATABASE_ID!,
-//       PATIENT_COLLECTION_ID!
-//     );
+export const getAllPatients = async () => {
+  try {
+    const patients = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.orderDesc("$createdAt")]
+    );
 
-//     const allPatients = patients.documents.map((patient) => {
-//       return {
-//         id: patient.$id,
-//         ...patient,
-//       };
-//     });
-//     console.log(allPatients);
+    // const initialCounts = {
+    //   unverifiedCount: 0,
+    //   verifiedCount: 0,
+    // };
 
-//     return parseStringify(allPatients);
-//   } catch (error) {
-//     console.error(
-//       "An error occurred while retrieving all patient details:",
-//       error
-//     );
-//   }
-// };
+    // const counts = (patients.documents as Patient[]).reduce((acc, patient) => {
+    //   switch (patient.status) {
+    //     case "scheduled":
+    //       acc.unverifiedCount++;
+    //       break;
+    //     case "pending":
+    //       acc.verifiedCount++;
+    //       break;
+    //   }
+    //   return acc;
+    // }, initialCounts);
+
+    const allPatients = patients.documents.map((patient) => {
+      return {
+        id: patient.$id,
+        ...patient,
+      };
+    });
+    console.log(allPatients);
+
+    return parseStringify(allPatients);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving all patient details:",
+      error
+    );
+  }
+};
