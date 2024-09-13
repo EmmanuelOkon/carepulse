@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/nextjs";
+
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -7,11 +9,9 @@ import Link from "next/link";
 
 const Register = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
-  //   const patient = await getPatient(userId);
-
-  //   if (patient) redirect(`/patients/${userId}/new-appointment`);
-
   const currentYear = new Date().getFullYear();
+
+  Sentry.metrics.set("user_view_register", user.name);
 
   return (
     <div className="flex h-screen max-h-screen">
