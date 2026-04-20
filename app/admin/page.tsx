@@ -1,12 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { StatCard } from "@/components/StatCard";
-import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
-import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
+import { columns } from "@/components/table/columns";
+import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
+import { getAdminSession } from "@/lib/admin-session";
 
 const AdminPage = async () => {
+  const session = await getAdminSession();
+
+  if (!session) {
+    redirect("/?admin=true");
+  }
+
   const appointments = await getRecentAppointmentList();
 
   return (

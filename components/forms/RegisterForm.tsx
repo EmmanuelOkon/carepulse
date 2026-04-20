@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Form, FormControl } from "@/components/ui/form";
@@ -15,14 +16,19 @@ import { SelectItem } from "@/components/ui/select";
 import { registerPatient } from "@/lib/actions/patient.actions";
 import { PatientFormValidation } from "@/lib/validation";
 
+import { FormFieldType } from "@/interface";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 import CustomFormField from "../CustomFormField";
-import { FormFieldType } from "@/interface";
 // import { FileUploader } from "../FileUploader";
-import SubmitButton from "../SubmitButton";
-import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants";
+import {
+  Doctors,
+  GenderOptions,
+  IdentificationTypes,
+  PatientFormDefaultValues,
+} from "@/constants";
 import FileUploader from "../FileUploader";
+import SubmitButton from "../SubmitButton";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -83,13 +89,15 @@ const RegisterForm = ({ user }: { user: User }) => {
         privacyConsent: values.privacyConsent,
       };
 
-        const newPatient = await registerPatient(patient);
+      const newPatient = await registerPatient(patient);
 
-        if (newPatient) {
-          router.push(`/patients/${user.$id}/new-appointment`);
-        }
+      if (newPatient) {
+        toast.success("Registration complete. Book an appointment next.");
+        router.push(`/patients/${user.$id}/new-appointment`);
+      }
     } catch (error) {
       console.log(error);
+      toast.error("Unable to complete registration. Please try again.");
     }
 
     setIsLoading(false);

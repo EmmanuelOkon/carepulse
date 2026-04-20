@@ -13,17 +13,21 @@ import { Input } from "./ui/input";
 import { CustomFormProps, FormFieldType } from "@/interface";
 import Image from "next/image";
 import ReactDatePicker from "react-datepicker";
+import { ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
+import PhoneInput from "react-phone-number-input";
+import { Checkbox } from "./ui/checkbox";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
-import { Checkbox } from "./ui/checkbox";
-import PhoneInput from "react-phone-number-input";
 
-const RenderInput = ({
+const RenderInput = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+>({
   field,
   props,
 }: {
-  field: any;
-  props: CustomFormProps;
+  field: ControllerRenderProps<TFieldValues, TName>;
+  props: CustomFormProps<TFieldValues, TName>;
 }) => {
   const { fieldType, iconSrc, iconAlt, placeholder } = props;
 
@@ -134,7 +138,12 @@ const RenderInput = ({
   }
 };
 
-const CustomFormField: React.FC<CustomFormProps> = (props) => {
+const CustomFormField = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+>(
+  props: CustomFormProps<TFieldValues, TName>,
+) => {
   const { control, fieldType, name, label } = props;
 
   return (

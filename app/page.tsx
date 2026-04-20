@@ -6,8 +6,9 @@ import { PasskeyModal } from "@/components/PasskeyModal";
 
 const currentYear = new Date().getFullYear();
 
-export default function Home({ searchParams }: SearchParamProps) {
-  const isAdmin = searchParams?.admin === "true";
+export default async function Home({ searchParams }: SearchParamProps) {
+  const resolvedSearchParams = await searchParams;
+  const isAdmin = resolvedSearchParams?.admin === "true";
 
   return (
     <div className="flex items-center h-screen max-h-screen">

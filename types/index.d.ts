@@ -56,3 +56,5 @@ declare type UpdateAppointmentParams = {
   type: string;
   timeZone: string;
 };
+
+declare module "*.css";

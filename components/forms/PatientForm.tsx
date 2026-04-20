@@ -5,16 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
 import { createUser } from "@/lib/actions/patient.actions";
 import { UserFormValidation } from "@/lib/validation";
 
-import CustomFormField from "../CustomFormField";
 import { FormFieldType } from "@/interface";
-import SubmitButton from "../SubmitButton";
 import "react-phone-number-input/style.css";
+import CustomFormField from "../CustomFormField";
+import SubmitButton from "../SubmitButton";
 
 const PatientForm = () => {
   const router = useRouter();
@@ -43,19 +44,23 @@ const PatientForm = () => {
       const newUser = (await createUser(user)) as { $id: string };
 
       if (newUser) {
+        toast.success("Profile created. Continue registration.");
         router.push(`/patients/${newUser.$id}/register`);
       }
     } catch (error) {
       console.log(error);
+      toast.error("Unable to create your profile. Please try again.");
     }
 
     setIsLoading(false);
   };
 
-  
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 justify-center">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 justify-center"
+      >
         <section className="mb-12 space-y-4">
           <h1 className="header text-white ">
             Hi there
@@ -90,7 +95,7 @@ const PatientForm = () => {
           name="phone"
           label="Phone number"
           placeholder="(555) 123-4567"
-          
+
           //
           // iconSrc="/assets/icons/phone.svg"
         />
@@ -102,4 +107,3 @@ const PatientForm = () => {
 };
 
 export default PatientForm;
-

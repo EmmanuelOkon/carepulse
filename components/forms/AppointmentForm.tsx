@@ -5,25 +5,26 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form } from "../ui/form";
-import CustomFormField from "../CustomFormField";
 import { FormFieldType } from "@/interface";
+import CustomFormField from "../CustomFormField";
+import { Form } from "../ui/form";
 
-import SubmitButton from "../SubmitButton";
 import { Doctors } from "@/constants";
-import { SelectItem } from "../ui/select";
-import { getAppointmentSchema } from "@/lib/validation";
 import {
   createAppointment,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
+import { getAppointmentSchema } from "@/lib/validation";
+import { Appointment } from "@/types/appwrite.types";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
-import { Appointment } from "@/types/appwrite.types";
+import SubmitButton from "../SubmitButton";
+import { SelectItem } from "../ui/select";
 
 const AppointmentForm = ({
   userId,
@@ -57,7 +58,7 @@ const AppointmentForm = ({
   });
 
   const onSubmit = async (
-    values: z.infer<typeof AppointmentFormValidation>
+    values: z.infer<typeof AppointmentFormValidation>,
   ) => {
     console.log("submitting", { type });
     setIsLoading(true);
@@ -91,7 +92,7 @@ const AppointmentForm = ({
         if (appointment) {
           form.reset();
           router.push(
-            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
+            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`,
           );
         }
       } else {
@@ -113,10 +114,16 @@ const AppointmentForm = ({
         if (updatedAppointment) {
           setOpen && setOpen(false);
           form.reset();
+          toast.success(
+            type === "cancel"
+              ? "Appointment cancelled successfully."
+              : "Appointment scheduled successfully.",
+          );
         }
       }
     } catch (error) {
       console.log(error);
+      toast.error("Unable to save the appointment. Please try again.");
     }
     setIsLoading(false);
   };
